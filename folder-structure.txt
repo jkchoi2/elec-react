@@ -1,0 +1,26 @@
+SSD 볼륨에 대한 폴더 경로의 목록입니다.
+볼륨 일련 번호는 3E1B-81EF입니다.
+elec-react:.
+│  package.json
+│  README.md
+│  screenshot.png
+│  
+├─public
+│      favicon.ico
+│      index.html
+│      logo192.png
+│      logo512.png
+│      manifest.json
+│      robots.txt
+│      
+└─src
+        App.css
+        App.js
+        App.test.js
+        index.css
+        index.js
+        logo.svg
+        main.js
+        reportWebVitals.js
+        setupTests.js
+        
