@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# Getting Started with Electron + React Desktop App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+* react-electron폴더를 만들고 react기본 템플릿으로 project를 생성한다.
+npx create-react-app react-electron
+cd react-electron
+code .
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Modify package.json
+```
+"main": "src/main.js",
 
-### `npm test`
+"scripts": {
+    "electron": "electron ." 
+}
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Make main.js and edit
+ 
+- win.loadURL("http://localhost:3000")
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Make main.js and edit (Electron과 React동시 실행위함)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+yarn add --dev concurrently wait-on
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+"scripts": {
+    "start": "concurrently \"yarn react-scripts start\" \"yarn electron\" ",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "wait-on http://localhost:3000 && electron ."
+},
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## root 폴더에 .env 파일을 만들고, 다음 내용을 추가합니다
+```
+BROWSER=none
+```
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Run program
+yarn start
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+![Screenshot](./screenshot.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+## Test 결과
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- 최초 실행시 화면이 보이기까지 10초이상 걸림
+- 두번째 실행시 2초 이내 실행됨.
+- App.js수정하면 바로바로 Electron실행화면에 반영됨.
+- 실행단계를 추적해보면
+  yarn react-scripts start 로 React가 실행되는데,
+  index.js 가 로딩하면서, App.js를 실행하여 localhost:3000서버가 만들어진다.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  그 다음 yarn electron 으로 electron이 실행되고, 
+  main.js에서 localhost:3000에 접속하게되고, Web화면이 Electron화면에 보이게된다.
